@@ -21,7 +21,7 @@ export function generatePassword(
   useNumbers = true,
   useSpecialCharacters?: boolean,
   onlyNumbers?: boolean,
-  notSequential?: boolean
+  nonSequential?: boolean
 ): string {
   let charCodes = LOWERCASE_CHARACTER_CODES;
 

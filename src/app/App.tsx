@@ -21,7 +21,7 @@ function App() {
   const [uppercase, setUppercase] = useState(true)
   const [numbers, setNumbers] = useState(true)
   const [symbols, setSymbols] = useState(true)
-  const [notSequential, setNotSequential] = useState(true)
+  const [nonSequential, setNonSequential] = useState(true)
   const [password, setPassword] = useState('')
   const [copied, setCopied] = useState(false)
 
@@ -42,7 +42,7 @@ function App() {
         numbers,
         symbols,
         isNumeric,
-        notSequential
+        nonSequential
       )
 
       setPassword(p)
@@ -152,15 +152,15 @@ function App() {
               )}
               {isNumeric && (
                 <>
-                  <Label className='text-xl' htmlFor='not-sequential'>
-                    Not sequential
+                  <Label className='text-xl' htmlFor='non-sequential'>
+                    Non-sequential
                   </Label>
                   <Checkbox
                     // TODO: Implement this feature
-                    id='not-sequential'
-                    disabled={notSequential}
+                    id='non-sequential'
+                    disabled={nonSequential}
                     checked={false}
-                    onCheckedChange={(e) => setNotSequential(!notSequential)}
+                    onCheckedChange={(e) => setNonSequential(!nonSequential)}
                   />
                 </>
               )}
