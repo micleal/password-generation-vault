@@ -10,6 +10,7 @@ const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
+    title: 'Password Generator Vault by Callica',
     height: 600,
     titleBarStyle: 'hidden',
     titleBarOverlay: {

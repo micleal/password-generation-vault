@@ -6,18 +6,22 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Slider } from '@/components/ui/slider'
-import { generatePassword } from '@/lib/utils'
+import { cn, generatePassword } from '@/lib/utils'
 import { Checkbox } from '@/components/ui/checkbox'
 import { CopyIcon } from '@radix-ui/react-icons'
 import { Provider } from '@/components/providers'
 import { Typography } from '@/components/Typography'
 import { AppHeader } from '@/components/app-header'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 
 function App() {
-  const [numOfCharacters, setNumOfCharacters] = useState(10)
-  const [uppercase, setUppercase] = useState(false)
-  const [numbers, setNumbers] = useState(false)
-  const [symbols, setSymbols] = useState(false)
+  const [isAlphanumeric, setIsAlphanumeric] = useState(true)
+  const [isNumeric, setIsNumeric] = useState(false)
+  const [numOfCharacters, setNumOfCharacters] = useState(12)
+  const [uppercase, setUppercase] = useState(true)
+  const [numbers, setNumbers] = useState(true)
+  const [symbols, setSymbols] = useState(true)
+  const [notSequential, setNotSequential] = useState(true)
   const [password, setPassword] = useState('')
   const [copied, setCopied] = useState(false)
 
@@ -25,13 +29,47 @@ function App() {
     setCopied(false)
     if (numOfCharacters === 0) return
 
-    const p = generatePassword(numOfCharacters, uppercase, numbers, symbols)
+    if (isAlphanumeric) {
+      const p = generatePassword(numOfCharacters, uppercase, numbers, symbols)
 
-    setPassword(p)
+      setPassword(p)
+    }
+
+    if (isNumeric) {
+      const p = generatePassword(
+        numOfCharacters,
+        uppercase,
+        numbers,
+        symbols,
+        isNumeric,
+        notSequential
+      )
+
+      setPassword(p)
+    }
   }
 
   const handleCopy = () => {
     navigator.clipboard.writeText(password).then(() => setCopied(true))
+  }
+
+  const passwordTypeChange = (e: string) => {
+    switch (e) {
+      case 'isAlphanumeric':
+        setIsNumeric(false)
+        setNumbers(true)
+        setUppercase(true)
+        setSymbols(true)
+        setIsAlphanumeric(true)
+        break
+      case 'isNumberOnly':
+        setIsAlphanumeric(false)
+        setNumbers(true)
+        setUppercase(false)
+        setSymbols(false)
+        setIsNumeric(true)
+        break
+    }
   }
 
   return (
@@ -46,7 +84,26 @@ function App() {
         <Typography.H1>Generate your Password</Typography.H1>
         <Card className='mx-8 my-2 w-1/3 min-w-[456px]'>
           <CardContent>
-            <div className='grid-cols-[auto_auto] gap-2 grid px-4 py-2'>
+            <div className='mt-2 flex justify-center space-y-2 items-center flex-col text-center'>
+              <Typography.P>
+                Generate a secure password with the options below.
+              </Typography.P>
+              <RadioGroup
+                defaultValue='isAlphanumeric'
+                onValueChange={(e) => passwordTypeChange(e)}
+                className='border rounded-lg border-border w-full items-center p-2'
+              >
+                <div className='flex items-center space-x-2'>
+                  <RadioGroupItem value='isAlphanumeric' id='is-alphanumeric' />
+                  <Label htmlFor='is-alphanumeric'>Alphanumeric</Label>
+                </div>
+                <div className='flex items-center space-x-2'>
+                  <RadioGroupItem value='isNumberOnly' id='is-numeric' />
+                  <Label htmlFor='is-numeric'>Numeric</Label>
+                </div>
+              </RadioGroup>
+            </div>
+            <div className='grid-cols-[auto_auto] items-center gap-2 grid px-4 py-2'>
               <Label className='text-xl'>Number of Characters</Label>
               <div className='flex gap-2'>
                 <Slider
@@ -65,31 +122,48 @@ function App() {
                   onChange={(e) => setNumOfCharacters(e.target.valueAsNumber)}
                 />
               </div>
-
-              <Label className='text-xl' htmlFor='uppercase'>
-                Include Uppercase
-              </Label>
-              <Checkbox
-                id='uppercase'
-                checked={uppercase}
-                onCheckedChange={(e) => setUppercase(!uppercase)}
-              />
-              <Label className='text-xl' htmlFor='numbers'>
-                Include Numbers
-              </Label>
-              <Checkbox
-                id='numbers'
-                checked={numbers}
-                onCheckedChange={(e) => setNumbers(!numbers)}
-              />
-              <Label className='text-xl' htmlFor='symbols'>
-                Include Symbols
-              </Label>
-              <Checkbox
-                id='symbols'
-                checked={symbols}
-                onCheckedChange={(e) => setSymbols(!symbols)}
-              />
+              {isAlphanumeric && (
+                <>
+                  <Label className='text-xl' htmlFor='uppercase'>
+                    Include Uppercase
+                  </Label>
+                  <Checkbox
+                    id='uppercase'
+                    checked={uppercase}
+                    onCheckedChange={(e) => setUppercase(!uppercase)}
+                  />
+                  <Label className='text-xl' htmlFor='numbers'>
+                    Include Numbers
+                  </Label>
+                  <Checkbox
+                    id='numbers'
+                    checked={numbers}
+                    onCheckedChange={(e) => setNumbers(!numbers)}
+                  />
+                  <Label className='text-xl' htmlFor='symbols'>
+                    Include Symbols
+                  </Label>
+                  <Checkbox
+                    id='symbols'
+                    checked={symbols}
+                    onCheckedChange={(e) => setSymbols(!symbols)}
+                  />
+                </>
+              )}
+              {isNumeric && (
+                <>
+                  <Label className='text-xl' htmlFor='not-sequential'>
+                    Not sequential
+                  </Label>
+                  <Checkbox
+                    // TODO: Implement this feature
+                    id='not-sequential'
+                    disabled={notSequential}
+                    checked={false}
+                    onCheckedChange={(e) => setNotSequential(!notSequential)}
+                  />
+                </>
+              )}
               <div className='flex flex-col col-span-2 mt-2'>
                 <Button
                   className='text-xl'
