@@ -6,13 +6,14 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Slider } from '@/components/ui/slider'
-import { cn, generatePassword } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import { Checkbox } from '@/components/ui/checkbox'
 import { CopyIcon } from '@radix-ui/react-icons'
 import { Provider } from '@/components/providers'
 import { Typography } from '@/components/Typography'
 import { AppHeader } from '@/components/app-header'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { generatePassword } from '@/lib/generation'
 
 function App() {
   const [isAlphanumeric, setIsAlphanumeric] = useState(true)
@@ -21,7 +22,8 @@ function App() {
   const [uppercase, setUppercase] = useState(true)
   const [numbers, setNumbers] = useState(true)
   const [symbols, setSymbols] = useState(true)
-  const [nonSequential, setNonSequential] = useState(true)
+  const [nonSequential, setNonSequential] = useState(false)
+  const [noMoreThan, setNoMoreThan] = useState(0)
   const [password, setPassword] = useState('')
   const [copied, setCopied] = useState(false)
 
@@ -42,6 +44,7 @@ function App() {
         numbers,
         symbols,
         isNumeric,
+        noMoreThan,
         nonSequential
       )
 
@@ -153,15 +156,33 @@ function App() {
               {isNumeric && (
                 <>
                   <Label className='text-xl' htmlFor='non-sequential'>
-                    Non-sequential
+                    Non-sequential numbers
                   </Label>
                   <Checkbox
-                    // TODO: Implement this feature
                     id='non-sequential'
-                    disabled={nonSequential}
-                    checked={false}
+                    checked={nonSequential}
                     onCheckedChange={(e) => setNonSequential(!nonSequential)}
                   />
+                  <Label className='text-xl' htmlFor='no-more-than'>
+                    No more than (n) of the same character
+                  </Label>
+                  <div className='flex gap-2'>
+                    <Slider
+                      min={0}
+                      max={numOfCharacters - 1}
+                      step={1}
+                      value={[noMoreThan]}
+                      onValueChange={(e) => setNoMoreThan(e.pop())}
+                    />
+                    <Input
+                      className='text-center text-lg'
+                      type='number'
+                      min={0}
+                      max={numOfCharacters - 1}
+                      value={noMoreThan}
+                      onChange={(e) => setNoMoreThan(e.target.valueAsNumber)}
+                    />
+                  </div>
                 </>
               )}
               <div className='flex flex-col col-span-2 mt-2'>
