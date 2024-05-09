@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from 'electron'
 import path from 'path'
+import { APP_NAME } from './utils/constants'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -10,7 +11,7 @@ const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
-    title: 'Password Generator Vault by Callica',
+    title: APP_NAME,
     height: 600,
     titleBarStyle: 'hidden',
     titleBarOverlay: {
