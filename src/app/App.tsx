@@ -6,9 +6,8 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Slider } from '@/components/ui/slider'
-import { cn } from '@/lib/utils'
 import { Checkbox } from '@/components/ui/checkbox'
-import { CopyIcon } from '@radix-ui/react-icons'
+import { CopyIcon } from 'lucide-react'
 import { Provider } from '@/components/providers'
 import { Typography } from '@/components/Typography'
 import { AppHeader } from '@/components/app-header'
@@ -202,7 +201,7 @@ function App() {
                     {password}
                   </Typography.P>
                   <Button size='icon' onClick={handleCopy}>
-                    <CopyIcon />
+                    <CopyIcon className='h-[1.2rem] w-[1.2rem]' />
                   </Button>
                 </>
               )}
