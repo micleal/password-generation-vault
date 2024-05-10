@@ -1,7 +1,7 @@
-// import { ThemeProvider } from './theme-provider'
-
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from './theme-provider'
+import { PasswordProvider } from './password-provider'
 
 export const Provider = {
   Theme: ThemeProvider,
+  Password: PasswordProvider,
 }
