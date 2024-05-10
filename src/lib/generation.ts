@@ -1,13 +1,15 @@
 const LOWERCASE_CHARACTER_CODES = arrayFromLowToHigh(97, 122)
 
 const UPPERCASE_CHARACTER_CODES = arrayFromLowToHigh(65, 90)
+
 const NUMBERS_CHARACTERS_CODES = arrayFromLowToHigh(48, 57)
 
 const SYMBOL_CHARACTERS_CODES = arrayFromLowToHigh(33, 47)
   .concat(arrayFromLowToHigh(58, 64))
   .concat(arrayFromLowToHigh(91, 96))
   .concat(arrayFromLowToHigh(123, 126))
-  .filter((code) => code !== 34 && code !== 39)
+
+const STANDARD_SYMBOL_CHARACTERS_CODES = [33, 35, 37, 43, 58, 61, 63, 64]
 
 /**
  * Generates a random password with the specified number of characters and optional constraints.
@@ -24,13 +26,25 @@ const SYMBOL_CHARACTERS_CODES = arrayFromLowToHigh(33, 47)
 export function generatePassword(
   numOfCharacters: number,
   useUpperCase?: boolean,
-  useNumbers = true,
+  useNumbers?: boolean,
   useSpecialCharacters?: boolean,
+  useStandardSpecialCharacters?: boolean,
   onlyNumbers?: boolean,
   noMoreThan?: number,
   nonSequential?: boolean
 ): string {
   let charCodes = LOWERCASE_CHARACTER_CODES
+
+  console.log('useSpecialCharacters:', useSpecialCharacters)
+  console.log('SYMBOL_CHARACTERS_CODES:', SYMBOL_CHARACTERS_CODES)
+  console.log('useStandardSpecialCharacters:', useStandardSpecialCharacters)
+  console.log(
+    'STANDARD_SYMBOL_CHARACTERS_CODES:',
+    STANDARD_SYMBOL_CHARACTERS_CODES
+  )
+  console.log('useUpperCase:', useUpperCase)
+  console.log('useNumbers:', useNumbers)
+  console.log('onlyNumbers:', onlyNumbers)
 
   if (onlyNumbers) {
     charCodes = []
@@ -40,8 +54,11 @@ export function generatePassword(
 
     if (useNumbers) charCodes = charCodes.concat(NUMBERS_CHARACTERS_CODES)
 
-    if (useSpecialCharacters)
-      charCodes = charCodes.concat(SYMBOL_CHARACTERS_CODES)
+    if (useSpecialCharacters) {
+      if (useStandardSpecialCharacters)
+        charCodes = charCodes.concat(STANDARD_SYMBOL_CHARACTERS_CODES)
+      else charCodes = charCodes.concat(SYMBOL_CHARACTERS_CODES)
+    }
   }
 
   const passwordCharacters = (): string[] => {
