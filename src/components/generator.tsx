@@ -9,27 +9,18 @@ import { Card, CardContent } from './ui/card'
 import { Input } from './ui/input'
 import { useState } from 'react'
 import { generatePassword } from '@/lib/generation'
-import { usePassword } from './providers/password-provider'
+import { useStandardCharacters } from './providers/standard-characters-provider'
 
 export function Generator() {
-  const {
-    numOfCharacters,
-    setNumOfCharacters,
-    allowUppercase,
-    setAllowUppercase,
-    allowNumbers,
-    setAllowNumbers,
-    allowSymbols,
-    setAllowSymbols,
-    useStandardCharacters,
-    noMoreThan,
-    setNoMoreThan,
-    nonSequential,
-    setNonSequential,
-    password,
-    setPassword,
-  } = usePassword()
+  const { standardCharacters } = useStandardCharacters()
 
+  const [numOfCharacters, setNumOfCharacters] = useState(12)
+  const [allowUppercase, setAllowUppercase] = useState(true)
+  const [allowNumbers, setAllowNumbers] = useState(true)
+  const [allowSymbols, setAllowSymbols] = useState(true)
+  const [password, setPassword] = useState('')
+  const [noMoreThan, setNoMoreThan] = useState(2)
+  const [nonSequential, setNonSequential] = useState(false)
   const [isAlphanumeric, setIsAlphanumeric] = useState(true)
   const [isNumeric, setIsNumeric] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -63,7 +54,7 @@ export function Generator() {
         allowUppercase,
         allowNumbers,
         allowSymbols,
-        useStandardCharacters
+        standardCharacters
       )
 
       setPassword(p)
@@ -75,7 +66,7 @@ export function Generator() {
         allowUppercase,
         allowNumbers,
         allowSymbols,
-        useStandardCharacters,
+        standardCharacters,
         isNumeric,
         noMoreThan,
         nonSequential

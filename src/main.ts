@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, shell } from 'electron'
 import path from 'path'
 import { APP_NAME } from './utils/constants'
 
@@ -19,6 +19,7 @@ const createWindow = () => {
       color: '#0c0a09',
       symbolColor: '#22c55e',
     },
+    icon: path.join(__dirname, './favicon.jpeg'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
@@ -33,6 +34,38 @@ const createWindow = () => {
     mainWindow.loadFile(
       path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
     )
+  }
+
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    handleUrl(url)
+    return { action: 'deny' }
+  })
+
+  async function handleUrl(url: string) {
+    const parsedUrl = maybeParsedUrl(url)
+    if (!parsedUrl) return
+
+    const { protocol } = parsedUrl
+
+    if (protocol === 'http:' || protocol === 'https:') {
+      try {
+        await shell.openExternal(url)
+      } catch (err: unknown) {
+        console.error(`Failed to open external URL: ${url}`)
+      }
+    }
+  }
+
+  function maybeParsedUrl(value: string) {
+    if (typeof value === 'string') {
+      try {
+        return new URL(value)
+      } catch (err) {
+        console.log(`Failed to parse URL: ${value}`)
+      }
+    }
+
+    return undefined
   }
 }
 

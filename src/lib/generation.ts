@@ -35,17 +35,6 @@ export function generatePassword(
 ): string {
   let charCodes = LOWERCASE_CHARACTER_CODES
 
-  console.log('useSpecialCharacters:', useSpecialCharacters)
-  console.log('SYMBOL_CHARACTERS_CODES:', SYMBOL_CHARACTERS_CODES)
-  console.log('useStandardSpecialCharacters:', useStandardSpecialCharacters)
-  console.log(
-    'STANDARD_SYMBOL_CHARACTERS_CODES:',
-    STANDARD_SYMBOL_CHARACTERS_CODES
-  )
-  console.log('useUpperCase:', useUpperCase)
-  console.log('useNumbers:', useNumbers)
-  console.log('onlyNumbers:', onlyNumbers)
-
   if (onlyNumbers) {
     charCodes = []
     charCodes = charCodes.concat(NUMBERS_CHARACTERS_CODES)
@@ -70,45 +59,6 @@ export function generatePassword(
       characters.push(String.fromCharCode(characterCode))
     }
 
-    if (noMoreThan > 0 && !nonSequential) {
-      console.log('noMoreThan > 0 && !nonSequential')
-      do {
-        characters = []
-        for (let i = 0; i < numOfCharacters; i++) {
-          const characterCode =
-            charCodes[Math.floor(Math.random() * charCodes.length)]
-          characters.push(String.fromCharCode(characterCode))
-        }
-      } while (noMoreThanNOfTheSameNumbers(characters.join(''), noMoreThan))
-    }
-
-    if (nonSequential && noMoreThan === 0) {
-      console.log('nonSequential && noMoreThan === 0')
-      do {
-        characters = []
-        for (let i = 0; i < numOfCharacters; i++) {
-          const characterCode =
-            charCodes[Math.floor(Math.random() * charCodes.length)]
-          characters.push(String.fromCharCode(characterCode))
-        }
-      } while (nonSequentialNumbers(characters.join('')))
-    }
-
-    if (noMoreThan > 0 && nonSequential) {
-      console.log('noMoreThan > 0 && nonSequential')
-      do {
-        characters = []
-        for (let i = 0; i < numOfCharacters; i++) {
-          const characterCode =
-            charCodes[Math.floor(Math.random() * charCodes.length)]
-          characters.push(String.fromCharCode(characterCode))
-        }
-      } while (
-        noMoreThanNOfTheSameNumbers(characters.join(''), noMoreThan) &&
-        nonSequentialNumbers(characters.join(''))
-      )
-    }
-
     return characters
   }
 
@@ -120,26 +70,4 @@ function arrayFromLowToHigh(low: number, high: number) {
   for (let i = low; i <= high; i++) array.push(i)
 
   return array
-}
-
-function noMoreThanNOfTheSameNumbers(password: string, n: number) {
-  const regex = new RegExp(`(\\d)\\1{${n - 1},}`, 'g')
-  return regex.test(password)
-}
-
-function nonSequentialNumbers(password: string) {
-  console.log(password)
-  for (let i = 0; i < password.length - 2; i++) {
-    if (
-      Number(password[i]) === Number(password[i + 1]) - 1 &&
-      Number(password[i + 1]) === Number(password[i + 2]) - 1
-    ) {
-      console.log('Number in the position:', i, 'is', password[i])
-      console.log('Number in the position:', i + 1, 'is', password[i + 1])
-      console.log('Number in the position:', i + 2, 'is', password[i + 2])
-      return false
-    }
-  }
-
-  return true
 }

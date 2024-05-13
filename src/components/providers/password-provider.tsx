@@ -101,7 +101,7 @@ export function PasswordProvider({
   )
 
   const value: PasswordProviderState = {
-    ...defaultPasswordState,
+    // ...defaultPasswordState,
     numOfCharacters,
     setNumOfCharacters,
     allowUppercase,
