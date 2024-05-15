@@ -7,13 +7,13 @@ import { VitePlugin } from '@electron-forge/plugin-vite'
 
 const config: ForgeConfig = {
   packagerConfig: {
-    icon: 'src/assets/icons/icon_32.ico',
+    icon: 'src/assets/icons/icon.ico',
   },
   rebuildConfig: {},
   makers: [
     new MakerSquirrel({
       authors: 'Michael Anthony Leal Costa (micleal)',
-      setupIcon: 'src/assets/icons/icon_32.ico',
+      setupIcon: 'src/assets/icons/icon.ico',
     }),
     new MakerZIP({}, ['darwin']),
     new MakerRpm({}),
