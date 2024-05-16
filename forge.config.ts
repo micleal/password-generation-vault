@@ -3,21 +3,37 @@ import { MakerSquirrel } from '@electron-forge/maker-squirrel'
 import { MakerZIP } from '@electron-forge/maker-zip'
 import { MakerDeb } from '@electron-forge/maker-deb'
 import { MakerRpm } from '@electron-forge/maker-rpm'
+import { PublisherGithub } from '@electron-forge/publisher-github'
 import { VitePlugin } from '@electron-forge/plugin-vite'
+import { FusesPlugin } from '@electron-forge/plugin-fuses'
+import { FuseV1Options, FuseVersion } from '@electron/fuses'
 
-const config: ForgeConfig = {
+const forgeConfig: ForgeConfig = {
   packagerConfig: {
-    icon: 'src/assets/icons/icon.ico',
+    asar: true,
+    icon: 'src/assets/icons/icon',
   },
   rebuildConfig: {},
   makers: [
     new MakerSquirrel({
       authors: 'Michael Anthony Leal Costa (micleal)',
-      setupIcon: 'src/assets/icons/icon.ico',
+      setupIcon: 'src/assets/icons/icon_256.ico',
     }),
     new MakerZIP({}, ['darwin']),
+    new MakerDeb({
+      options: {
+        icon: 'src/assets/icons/icon@512.png',
+      },
+    }),
     new MakerRpm({}),
-    new MakerDeb({}),
+  ],
+  publishers: [
+    new PublisherGithub({
+      repository: {
+        owner: 'micleal',
+        name: 'password-generation-vault',
+      },
+    }),
   ],
   plugins: [
     new VitePlugin({
@@ -41,7 +57,22 @@ const config: ForgeConfig = {
         },
       ],
     }),
+    {
+      name: '@electron-forge/plugin-auto-unpack-natives',
+      config: {},
+    },
+    // Fuses are used to enable/disable various Electron functionality
+    // at package time, before code signing the application
+    new FusesPlugin({
+      version: FuseVersion.V1,
+      [FuseV1Options.RunAsNode]: false,
+      [FuseV1Options.EnableCookieEncryption]: true,
+      [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
+      [FuseV1Options.EnableNodeCliInspectArguments]: false,
+      [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
+      [FuseV1Options.OnlyLoadAppFromAsar]: true,
+    }),
   ],
 }
 
-export default config
+export default forgeConfig

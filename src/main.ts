@@ -1,6 +1,20 @@
-import { app, BrowserWindow, shell } from 'electron'
+import { app, autoUpdater, BrowserWindow, shell } from 'electron'
 import path from 'path'
 import { APP_NAME } from './utils/constants'
+import { updateElectronApp } from 'update-electron-app'
+
+updateElectronApp()
+
+const server = 'https://update.electronjs.org'
+const feed = `${server}/micleal/password-generation-vault/${process.platform}-${
+  process.arch
+}/${app.getVersion()}`
+
+autoUpdater.setFeedURL({ url: feed })
+
+setInterval(() => {
+  autoUpdater.checkForUpdates()
+}, 10 * 60 * 1000)
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -19,7 +33,7 @@ const createWindow = () => {
       color: '#0c0a09',
       symbolColor: '#22c55e',
     },
-    icon: path.join(__dirname, './favicon.jpeg'),
+    icon: path.join(__dirname, 'src/assets/icons/icon@512.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
