@@ -7,18 +7,28 @@ import { PublisherGithub } from '@electron-forge/publisher-github'
 import { VitePlugin } from '@electron-forge/plugin-vite'
 import { FusesPlugin } from '@electron-forge/plugin-fuses'
 import { FuseV1Options, FuseVersion } from '@electron/fuses'
+import pkg from './package.json'
+
+const { version } = pkg
 
 const forgeConfig: ForgeConfig = {
   packagerConfig: {
     asar: true,
     icon: 'src/assets/icons/icon',
+    name: 'Password Generator',
+    executableName: `password-generator`,
   },
   rebuildConfig: {},
   makers: [
-    new MakerSquirrel({
+    new MakerSquirrel((arch: string) => ({
+      name: 'password-generator',
       authors: 'Michael Anthony Leal Costa (micleal)',
+      iconUrl:
+        'https://raw.githubusercontent.com/micleal/password-generation-vault/v1.4.1/src/assets/icons/icon_256.ico',
       setupIcon: 'src/assets/icons/icon_256.ico',
-    }),
+      setupExe: `password-generator-${version}-win32-${arch}-setup.exe`,
+      exe: `password-generator.exe`,
+    })),
     new MakerZIP({}, ['darwin']),
     new MakerDeb({
       options: {
