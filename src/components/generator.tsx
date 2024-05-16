@@ -5,7 +5,7 @@ import { Slider } from './ui/slider'
 import { CopyIcon } from 'lucide-react'
 import { Typography } from './Typography'
 import { Button } from './ui/button'
-import { Card, CardContent } from './ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Input } from './ui/input'
 import { useState } from 'react'
 import { generatePassword } from '@/lib/generation'
@@ -81,8 +81,9 @@ export function Generator() {
   }
 
   return (
-    <>
-      <Card className='mx-8 my-2 w-1/3 min-w-[456px]'>
+    <section className='flex flex-col min-w-full items-center justify-center gap-2'>
+      <Typography.H1>Generate your Password</Typography.H1>
+      <Card className='mx-8 my-2 w-1/3 min-w-[512px]'>
         <CardContent>
           <div className='mt-2 flex justify-center space-y-2 items-center flex-col text-center'>
             <Typography.P>
@@ -211,6 +212,6 @@ export function Generator() {
           )}
         </CardContent>
       </Card>
-    </>
+    </section>
   )
 }

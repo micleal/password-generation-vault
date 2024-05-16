@@ -35,11 +35,11 @@ if (!isInstanceLocked) {
 const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800,
+    width: 850,
     title: APP_NAME,
-    height: 600,
-    minWidth: 800,
-    minHeight: 600,
+    height: 650,
+    minWidth: 850,
+    minHeight: 650,
     titleBarStyle: 'hidden',
     titleBarOverlay: {
       height: 32,
