@@ -1,7 +1,7 @@
 {
   "name": "password-generation-vault",
   "productName": "Password Generator",
-  "version": "1.3.0",
+  "version": "1.4.2",
   "description": "My Electron application description",
   "main": ".vite/build/main.js",
   "scripts": {
@@ -20,6 +20,10 @@
   "author": {
     "name": "Michael Anthony Leal Costa",
     "email": "15739975+micleal@users.noreply.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/micleal/password-generation-vault.git"
   },
   "license": "MIT",
   "devDependencies": {
