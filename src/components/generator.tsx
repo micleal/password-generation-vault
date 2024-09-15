@@ -7,14 +7,14 @@ import { Typography } from './Typography'
 import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { Input } from './ui/input'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { generatePassword } from '@/lib/generation'
 import { useStandardCharacters } from './providers/standard-characters-provider'
 
 export function Generator() {
   const { standardCharacters } = useStandardCharacters()
 
-  const [numOfCharacters, setNumOfCharacters] = useState(12)
+  const [numOfCharacters, setNumOfCharacters] = useState(16)
   const [allowUppercase, setAllowUppercase] = useState(true)
   const [allowNumbers, setAllowNumbers] = useState(true)
   const [allowSymbols, setAllowSymbols] = useState(true)
@@ -54,7 +54,7 @@ export function Generator() {
         allowUppercase,
         allowNumbers,
         allowSymbols,
-        standardCharacters
+        standardCharacters,
       )
 
       setPassword(p)
@@ -69,30 +69,40 @@ export function Generator() {
         standardCharacters,
         isNumeric,
         noMoreThan,
-        nonSequential
+        nonSequential,
       )
 
       setPassword(p)
     }
   }
 
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'n' && (e.metaKey || e.ctrlKey)) {
+      handlePasswordGeneration()
+    }
+
+    if (e.key === 'c' && (e.metaKey || e.ctrlKey)) {
+      if (password !== null || password.length > 0) handleCopy()
+    }
+  })
+
   const handleCopy = () => {
     navigator.clipboard.writeText(password).then(() => setCopied(true))
   }
 
   return (
-    <section className='flex flex-col min-w-full items-center justify-center gap-2'>
+    <section className='flex min-w-full flex-col items-center justify-center gap-2'>
       <Typography.H1>Generate your Password</Typography.H1>
       <Card className='mx-8 my-2 w-1/3 min-w-[512px]'>
         <CardContent>
-          <div className='mt-2 flex justify-center space-y-2 items-center flex-col text-center'>
+          <div className='mt-2 flex flex-col items-center justify-center space-y-2 text-center'>
             <Typography.P>
               Generate a secure password with the options below.
             </Typography.P>
             <RadioGroup
               defaultValue='isAlphanumeric'
               onValueChange={(e) => passwordTypeChange(e)}
-              className='border rounded-lg border-border w-full items-center p-2'
+              className='w-full items-center rounded-lg border border-border p-2'
             >
               <div className='flex items-center space-x-2'>
                 <RadioGroupItem value='isAlphanumeric' id='is-alphanumeric' />
@@ -104,7 +114,7 @@ export function Generator() {
               </div>
             </RadioGroup>
           </div>
-          <div className='grid-cols-[auto_auto] items-center gap-2 grid px-4 py-2'>
+          <div className='grid grid-cols-[auto_auto] items-center gap-2 px-4 py-2'>
             <Label className='text-xl'>Number of Characters</Label>
             <div className='flex gap-2'>
               <Slider
@@ -183,7 +193,7 @@ export function Generator() {
                 </div>
               </>
             )}
-            <div className='flex flex-col col-span-2 mt-2'>
+            <div className='col-span-2 mt-2 flex flex-col'>
               <Button
                 className='text-xl'
                 size='lg'
@@ -193,10 +203,10 @@ export function Generator() {
               </Button>
             </div>
           </div>
-          <div className='py-2 text-center col-span-2 text-wrap overflow-none flex-wrap flex gap-2 items-center justify-center'>
+          <div className='overflow-none col-span-2 flex flex-wrap items-center justify-center gap-2 text-wrap py-2 text-center'>
             {password && (
               <>
-                <Typography.P className='text-wrap overflow-none'>
+                <Typography.P className='overflow-none text-wrap'>
                   {password}
                 </Typography.P>
                 <Button size='icon' onClick={handleCopy}>
