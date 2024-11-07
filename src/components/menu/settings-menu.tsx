@@ -13,26 +13,24 @@ export function SettingsMenu() {
   const { standardCharacters, setStandardCharacters } = useStandardCharacters()
 
   return (
-    <div className='absolute top-10 left-2'>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant='outline' size='icon'>
-            <SettingsIcon className='h-[1.2rem] w-[1.2rem] transition-all' />
-            <span className='sr-only'>Settings Menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align='start'>
-          <DropdownMenuCheckboxItem
-            className={cn(
-              standardCharacters === true ? 'text-primary' : 'text-foreground'
-            )}
-            checked={standardCharacters}
-            onClick={() => setStandardCharacters(!standardCharacters)}
-          >
-            Standard Characters
-          </DropdownMenuCheckboxItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant='outline' size='icon'>
+          <SettingsIcon className='h-[1.2rem] w-[1.2rem] transition-all' />
+          <span className='sr-only'>Settings Menu</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align='start'>
+        <DropdownMenuCheckboxItem
+          className={cn(
+            standardCharacters === true ? 'text-primary' : 'text-foreground'
+          )}
+          checked={standardCharacters}
+          onClick={() => setStandardCharacters(!standardCharacters)}
+        >
+          Standard Characters
+        </DropdownMenuCheckboxItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

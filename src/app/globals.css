@@ -53,14 +53,15 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground overflow-y-hidden;
+  body,
+  #app {
+    @apply bg-background text-foreground flex flex-col overflow-y-hidden min-h-screen;
   }
 }
 
 @layer components {
   .titlebar {
-    @apply draggable h-10 select-none;
+    @apply draggable h-10 select-none absolute;
   }
 }
 

@@ -21,12 +21,25 @@ if (require('electron-squirrel-startup')) {
   app.quit()
 }
 let mainWindow: BrowserWindow
+
+/**
+ * Indicates whether the application instance is locked.
+ * @type {boolean}
+ */
+const isInstanceLocked = app.requestSingleInstanceLock()
+
+if (!isInstanceLocked) {
+  app.quit()
+}
+
 const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800,
+    width: 850,
     title: APP_NAME,
-    height: 600,
+    height: 650,
+    minWidth: 850,
+    minHeight: 650,
     titleBarStyle: 'hidden',
     titleBarOverlay: {
       height: 32,
@@ -82,6 +95,14 @@ const createWindow = () => {
     return undefined
   }
 }
+
+// Ensure only one instance of the app is running
+app.on('second-instance', () => {
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) mainWindow.restore()
+    mainWindow.focus()
+  }
+})
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
